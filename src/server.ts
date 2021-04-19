@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
 import cors from '@koa/cors';
 import winston from 'winston';
+import { Context } from 'koa';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
 
@@ -13,7 +14,8 @@ import { unprotectedRouter } from './unprotectedRoutes';
 import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
 
-import { User } from './entity/user';
+import { User, Goods } from './entity';
+import { sessionStorage } from './global';
 
 const serve = require('koa-static');
 
@@ -29,7 +31,7 @@ createConnection({
 	password: 'pang12138',
 	synchronize: true,
 	logging: false,
-	entities: [User],
+	entities: [User, Goods],
 })
 	.then(async () => {
 		const app = new Koa();
@@ -51,14 +53,15 @@ createConnection({
 		// these routes are NOT protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
 		app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods());
 
-		// JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
-		// do not protect swagger-json and swagger-html endpoints
-		// app.use(jwt({ secret: config.jwtSecret }).unless({ path: [/^\/swagger-/] }));
-
-		// These routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
+		// app.use(async (ctx: Context, next) => {
+		// 	const sid = ctx.cookies.get('sid');
+		// 	if (!sessionStorage.has(sid)) {
+		// 		ctx.throw(401, 'no auth');
+		// 	}
+		// 	await next();
+		// });
 		app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
 
-		// Register cron job to do any action needed
 		cron.start();
 
 		app.listen(config.port);
