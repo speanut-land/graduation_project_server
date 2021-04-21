@@ -36,6 +36,14 @@ createConnection({
 	.then(async () => {
 		const app = new Koa();
 
+		app.use(async (ctx, next) => {
+			try {
+				await next();
+			} catch (err) {
+				console.log(err);
+			}
+		});
+
 		// Provides important security headers to make your app more secure
 		app.use(helmet());
 

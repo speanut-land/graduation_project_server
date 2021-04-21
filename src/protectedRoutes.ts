@@ -8,6 +8,7 @@ protectedRouter.get('/user', user.getUsers);
 protectedRouter.post('/user', user.createUser);
 protectedRouter.put('/user', user.updateUser);
 protectedRouter.delete('/user', user.deleteUser);
+protectedRouter.put('/updateUserPwd', user.resetUserPassword);
 
 // GOODS ROUTES
 protectedRouter.get('/goods', goods.getAllGoods);
