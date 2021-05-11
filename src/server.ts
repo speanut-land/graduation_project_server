@@ -14,7 +14,7 @@ import { unprotectedRouter } from './unprotectedRoutes';
 import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
 
-import { User, Goods } from './entity';
+import { User, Goods, Dataset } from './entity';
 import { sessionStorage } from './global';
 
 const serve = require('koa-static');
@@ -31,7 +31,7 @@ createConnection({
 	password: 'pang12138',
 	synchronize: true,
 	logging: false,
-	entities: [User, Goods],
+	entities: [User, Dataset],
 })
 	.then(async () => {
 		const app = new Koa();

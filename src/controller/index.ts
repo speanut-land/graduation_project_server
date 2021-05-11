@@ -5,3 +5,4 @@ export { default as goods } from './goods';
 export { default as order } from './order';
 
 export { default as address } from './address';
+export { default as dataset } from './dataset';

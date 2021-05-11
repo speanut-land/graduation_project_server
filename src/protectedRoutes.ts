@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import { user, goods, order, address } from './controller';
+import { user, goods, dataset } from './controller';
 
 const protectedRouter = new Router();
 
@@ -18,14 +18,7 @@ protectedRouter.put('/goods', goods.updateGoods);
 protectedRouter.delete('/goods', goods.deleteGoods);
 
 // ORDER ROUTES
-protectedRouter.get('/order', order.getAllOrder);
-protectedRouter.post('/order', order.createOrder);
-protectedRouter.put('/order', order.updateOrder);
-protectedRouter.delete('/order', order.deleteOrder);
-
-// ADDRESS ROUTES
-protectedRouter.get('/address', address.getAllAddress);
-protectedRouter.post('/address', address.createAddress);
-protectedRouter.put('/address', address.updateAddress);
-protectedRouter.delete('/address', address.deleteAddress);
+protectedRouter.get('/dataset', dataset.getDatasets);
+protectedRouter.post('/dataset', dataset.createDataset);
+protectedRouter.delete('/dataset', dataset.deleteDataset);
 export { protectedRouter };
